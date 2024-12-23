@@ -9,7 +9,7 @@ import java.sql.Date;
 
 @Entity
 @Data
-@Table(name = "User")
+@Table(name = "USER")
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Builder
 @NoArgsConstructor
@@ -43,7 +43,7 @@ public class User {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "role", referencedColumnName = "id", nullable = false)
-    private Role role;
+    private UserRole userRole;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "credit_card_id", referencedColumnName = "id")

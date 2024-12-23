@@ -13,10 +13,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    @Lazy
-    private PasswordEncoder passwordEncoder;
-
     public User getUser(final Long id) {
         return this.userRepository.findById(id).orElse(null);
     }

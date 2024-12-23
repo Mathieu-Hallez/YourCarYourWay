@@ -2,9 +2,14 @@ package me.yourcaryourway.YourCarYourWay.configurations;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -24,6 +29,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.List;
 
+@Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
 
@@ -31,7 +37,7 @@ public class SpringSecurityConfig {
     private UserDetailsService userDetailsService;
 
     public static final String[] PUBLIC_PATHS = {
-            "/api/auth/**",
+            "/api/authentication/**",
             "/api-docs.yaml",
             "/api-docs/**",
             "/api-docs",
@@ -72,7 +78,21 @@ public class SpringSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    private final String jwtKey = "839a3cd6bbfcdad25f8a251fa1de4fc1d2616b74123ab9f971f8c5e907512c2a";
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    @Value("${app.jwt.secret}")
+    private String jwtKey;
     @Bean
     public JwtDecoder jwtDecoder() {
         SecretKeySpec secretKey = new SecretKeySpec(this.jwtKey.getBytes(), 0, this.jwtKey.getBytes().length,"RSA");

@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.ToStringExclude;
 import java.sql.Date;
 
 @Entity
-@Table(name = "CreditCard")
+@Table(name = "CREDIT_CARD")
 @Data
 @Builder
 @NoArgsConstructor
@@ -34,6 +34,6 @@ public class CreditCard {
     @Column(name = "crypto_code")
     private String cryptoCode;
 
-    @OneToOne(mappedBy = "credit_card_id")
+    @OneToOne(mappedBy = "creditCard")
     private User user;
 }

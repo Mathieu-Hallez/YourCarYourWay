@@ -6,7 +6,7 @@ import lombok.*;
 import org.apache.commons.lang3.builder.ToStringExclude;
 
 @Entity
-@Table(name = "Address")
+@Table(name = "ADDRESS")
 @Data
 @Builder
 @NoArgsConstructor

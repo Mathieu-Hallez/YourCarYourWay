@@ -6,14 +6,14 @@ import lombok.*;
 import org.apache.commons.lang3.builder.ToStringExclude;
 
 @Entity
-@Table(name = "Role")
+@Table(name = "USER_ROLE")
 @Data
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Role {
+public class UserRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
