@@ -8,8 +8,8 @@ import org.apache.commons.lang3.builder.ToStringExclude;
 import java.sql.Date;
 
 @Entity
-@Data
 @Table(name = "USER")
+@Data
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Builder
 @NoArgsConstructor
@@ -42,15 +42,20 @@ public class User {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "role", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private UserRole userRole;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "credit_card_id", referencedColumnName = "id")
-    private CreditCard creditCard;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "credit_card_id", referencedColumnName = "id")
+    private CreditCard creditCard;
+
+//    Not used in the PoC
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "licence_id", referencedColumnName = "id")
+//    private Licence licence;
 }
