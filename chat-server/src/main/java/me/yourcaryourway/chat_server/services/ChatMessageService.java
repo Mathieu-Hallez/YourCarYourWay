@@ -11,6 +11,8 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class ChatMessageService {
 
+    private final String apiUrl = "http://localhost:3001/api/chat";
+
     public ChatMessage save(ChatMessage chatMessage) {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<SaveMessageDto> request = new HttpEntity<>(
@@ -24,7 +26,7 @@ public class ChatMessageService {
                     .build()
         );
         ResponseEntity<SaveMessageDto> responseEntity = restTemplate.exchange(
-                "localhost:3001/api/chat/message/save",
+                apiUrl + "/message/save",
                 HttpMethod.POST,
                 request,
                 SaveMessageDto.class
