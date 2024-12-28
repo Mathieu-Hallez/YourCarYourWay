@@ -1,15 +1,20 @@
 package me.yourcaryourway.chat_server.services;
 
-import jdk.jshell.spi.ExecutionControl;
 import me.yourcaryourway.chat_server.models.ChatMessage;
 import me.yourcaryourway.chat_server.models.api.SaveMessageDto;
+import me.yourcaryourway.chat_server.configurations.properties.ApiConfigProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public class ChatMessageService {
+
+    @Autowired
+    private ApiConfigProperties apiConfigProperties;
+
+    private final String controller = "/chat";
 
     public ChatMessage save(ChatMessage chatMessage) {
         RestTemplate restTemplate = new RestTemplate();
@@ -24,7 +29,7 @@ public class ChatMessageService {
                     .build()
         );
         ResponseEntity<SaveMessageDto> responseEntity = restTemplate.exchange(
-                "localhost:3001/api/chat/message/save",
+                this.apiConfigProperties.baseUrl() + controller + "/message/save",
                 HttpMethod.POST,
                 request,
                 SaveMessageDto.class

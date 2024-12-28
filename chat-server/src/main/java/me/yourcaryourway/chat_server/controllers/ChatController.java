@@ -21,16 +21,17 @@ public class ChatController {
     @MessageMapping("/chat")
     public void processMessage(@Payload ChatMessage chatMessage) {
         ChatMessage savedMessage = this.chatMessageService.save(chatMessage);
+        ChatNotification chatNotification = ChatNotification.builder()
+                .id(savedMessage.getId().toString())
+                .senderEmail(savedMessage.getSenderEmail())
+                .receiverEmail(savedMessage.getReceiverEmail())
+                .content(savedMessage.getText())
+                .build();
 
         this.simpMessagingTemplate.convertAndSendToUser(
                 chatMessage.getReceiverEmail(),
                 "/queue/messages",
-                ChatNotification.builder()
-                        .id(savedMessage.getId().toString())
-                        .senderEmail(savedMessage.getSenderEmail())
-                        .receiverEmail(savedMessage.getReceiverEmail())
-                        .content(savedMessage.getText())
-                        .build()
+                chatNotification
         );
     }
 }
