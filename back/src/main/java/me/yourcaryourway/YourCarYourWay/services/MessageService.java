@@ -46,8 +46,8 @@ public class MessageService {
         }
     }
 
-    public void saveMessage(Message message) {
-        this.messageRepository.save(message);
+    public Message saveMessage(Message message) {
+        return this.messageRepository.save(message);
     }
 
     public Message getMessage(Long id) {
