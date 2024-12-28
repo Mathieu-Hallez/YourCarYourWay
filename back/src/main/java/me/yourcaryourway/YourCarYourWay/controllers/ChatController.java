@@ -43,14 +43,15 @@ public class ChatController {
     private AbstractMessageMapper abstractMessageMapper;
 
     @PostMapping("/message/save")
-    public ResponseEntity<?> saveMessage(@RequestBody final SaveMessageDto saveMessageDto) {
+    public ResponseEntity<ApiResponseDto> saveMessage(@RequestBody final SaveMessageDto saveMessageDto) {
         try {
             Message messageToSave = this.abstractMessageMapper.toEntity(saveMessageDto);
             if(messageToSave == null) {
                 return new ResponseEntity<>(new ErrorDto("No message to save."), HttpStatus.NOT_FOUND);
             }
             messageToSave.setSubject(Objects.requireNonNullElse(messageToSave.getParent(), null).getSubject());
-            this.messageService.saveMessage(messageToSave);
+
+            return ResponseEntity.ok(this.abstractMessageMapper.toDto(this.messageService.saveMessage(messageToSave)));
         } catch(Exception exception) {
             logger.debug(Arrays.toString(exception.getStackTrace()));
             logger.error(exception.getMessage());
@@ -58,7 +59,6 @@ public class ChatController {
             System.out.println(Arrays.toString(exception.getStackTrace()));
             return ResponseEntity.internalServerError().body(new ErrorDto("Error: Internal server error."));
         }
-        return ResponseEntity.ok(new SuccessResponseDto("Message successfully saved."));
     }
 
     @PutMapping("/message/{id}/read")
@@ -138,4 +138,17 @@ public class ChatController {
         }
         return ResponseEntity.ok().body(new SuccessResponseDto("Conversation successfully created."));
     }
+
+//    @GetMapping("/user/{id}")
+//    public ResponseEntity<ApiResponseDto> getUser(@PathVariable("id") final Long id) {
+//        try{
+//            User user = this.userService.getUser()
+//        } catch(Exception exception) {
+//            logger.debug(Arrays.toString(exception.getStackTrace()));
+//            logger.error(exception.getMessage());
+//            System.out.println(exception.getMessage());
+//            System.out.println(Arrays.toString(exception.getStackTrace()));
+//            return ResponseEntity.internalServerError().body(new ErrorDto("Error: Internal server error."));
+//        }
+//    }
 }
