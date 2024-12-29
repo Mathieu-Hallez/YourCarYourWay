@@ -1,1 +1,11 @@
-<p>message-text-input works!</p>
+<form class="example-form" [formGroup]="messageForm" >
+    <mat-form-field class="example-full-width">
+      <input matInput [formControlName]="content" placeholder="Message" value="">
+    </mat-form-field>
+    <div fxLayoutAlign="start center">
+        <button mat-icon-button type="submit" (click)="onSendMessage()" [disabled]="messageForm.invalid">
+            Envoyer
+        </button>
+    </div>
+</form>
+  
