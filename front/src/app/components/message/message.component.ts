@@ -11,4 +11,6 @@ export class MessageComponent {
 
   @Input() message! : Message;
 
+  isReadDisplay : string = this.message.$isRead ? '✔️' : '✖️';
+
 }
