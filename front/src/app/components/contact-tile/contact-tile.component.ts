@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Contact } from '../../models/Contact';
 
 @Component({
   selector: 'app-contact-tile',
@@ -7,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './contact-tile.component.scss'
 })
 export class ContactTileComponent {
-
+  @Input()
+  contact! : Contact;
 }
