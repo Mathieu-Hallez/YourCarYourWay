@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -12,6 +12,9 @@ import { MatInputModule } from '@angular/material/input';
 export class MessageTextInputComponent {
 
   private formBuilder = inject(FormBuilder);
+
+  @Input({ required: true })
+  receiver! : string;
 
   formObject : any = {
     message : ''
