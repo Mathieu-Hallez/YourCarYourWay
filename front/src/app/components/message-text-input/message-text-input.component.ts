@@ -10,7 +10,12 @@ import { MatInputModule } from '@angular/material/input';
   styleUrl: './message-text-input.component.scss'
 })
 export class MessageTextInputComponent {
-  private formBuilder = inject(FormBuilder)
+
+  private formBuilder = inject(FormBuilder);
+
+  formObject : any = {
+    message : ''
+  }
   
   messageForm : FormGroup = this.formBuilder.group({
     content: [
@@ -22,6 +27,7 @@ export class MessageTextInputComponent {
   });
 
   onSendMessage(): void {
+    const formValue = this.formObject;
     // TODO Send message to Websocket
   }
 
