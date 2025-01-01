@@ -11,23 +11,12 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class MessageTextInputComponent {
 
-  private formBuilder = inject(FormBuilder);
-
   @Input({ required: true })
   receiver! : string;
 
   formObject : any = {
     message : ''
   }
-  
-  messageForm : FormGroup = this.formBuilder.group({
-    content: [
-      '',
-      [
-        Validators.required
-      ]
-    ]
-  });
 
   onSendMessage(): void {
     const formValue = this.formObject;

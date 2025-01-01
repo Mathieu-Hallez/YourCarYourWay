@@ -8,7 +8,7 @@
         <input matInput name="message" #message="ngModel" required [(ngModel)]="formObject.message" placeholder="Message">
     </mat-form-field>
     <div fxLayoutAlign="start center">
-        <button mat-icon-button type="submit" (click)="onSendMessage()" [disabled]="messageForm.invalid">
+        <button mat-icon-button type="submit" (click)="onSendMessage()" [disabled]="formObject.invalid">
             Envoyer
         </button>
     </div>
