@@ -1,0 +1,16 @@
+<form class="example-form">
+    <mat-form-field class="example-full-width">
+        <div class="text-danger">
+            @if(message.errors?.['required'] && message.touched && message.dirty) {
+                <span>Empty message</span>
+            }
+        </div>
+        <input matInput name="message" #message="ngModel" required [(ngModel)]="formObject.message" placeholder="Message">
+    </mat-form-field>
+    <div fxLayoutAlign="start center">
+        <button mat-icon-button type="submit" (click)="onSendMessage()" [disabled]="formObject.invalid">
+            Envoyer
+        </button>
+    </div>
+</form>
+  

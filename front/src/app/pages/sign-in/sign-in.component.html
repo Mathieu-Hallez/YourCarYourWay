@@ -1,0 +1,26 @@
+<form>
+    <mat-form-field class="example-full-width">
+        <div class="text-danger">
+            @if(email.errors?.['required'] && email.touched && email.dirty) {
+                <span>Email requis</span>
+            }
+            @if(email.errors?.['email'] && email.touched && email.dirty) {
+                <span>Email invalide</span>
+            } 
+        </div>
+        <input matInput name="email" #email="ngModel" required type="email" email [(ngModel)]="formObject.email" placeholder="Email">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+        <div class="text-danger">
+            @if(password.errors?.['required'] && password.touched && password.dirty) {
+                <span>Mot de passe requis</span>
+            }
+        </div>
+        <input matInput name="password" #password="ngModel" required type="password" [(ngModel)]="formObject.password" placeholder="Password">
+    </mat-form-field>
+    <div fxLayoutAlign="start center">
+        <button mat-icon-button type="submit" (click)="onSignIn()" [disabled]="formObject.invalid">
+            Se connecter
+        </button>
+    </div>
+</form>
