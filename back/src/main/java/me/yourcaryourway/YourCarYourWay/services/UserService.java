@@ -7,21 +7,20 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.StreamSupport;
+
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
 
-    public User getUser(final Long id) {
-        return this.userRepository.findById(id).orElse(null);
+    public List<User> getUsers() {
+        return StreamSupport.stream(this.userRepository.findAll().spliterator(), false).toList();
     }
 
     public User getUser(final String email) {
         return this.userRepository.findByEmail(email).orElse(null);
-    }
-
-    public boolean existsByEmail(final String email) {
-        return this.userRepository.existsByEmail(email);
     }
 }

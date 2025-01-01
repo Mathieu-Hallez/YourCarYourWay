@@ -5,6 +5,7 @@ import me.yourcaryourway.YourCarYourWay.dtos.ApiResponseDto;
 import me.yourcaryourway.YourCarYourWay.dtos.api.ErrorDto;
 import me.yourcaryourway.YourCarYourWay.dtos.api.SuccessResponseDto;
 import me.yourcaryourway.YourCarYourWay.dtos.chat.*;
+import me.yourcaryourway.YourCarYourWay.dtos.user.ConversationUserDto;
 import me.yourcaryourway.YourCarYourWay.mappers.AbstractConversationUserMapper;
 import me.yourcaryourway.YourCarYourWay.mappers.AbstractMessageMapper;
 import me.yourcaryourway.YourCarYourWay.models.Message;
@@ -82,9 +83,9 @@ public class ChatController {
     }
 
     @GetMapping("/conversation")
-    public ResponseEntity<?> getConversation(@RequestBody final RequestConversationDto conversationDto) {
-        User sender = this.userService.getUser(conversationDto.getSenderEmail());
-        User receiver = this.userService.getUser(conversationDto.getReceiverEmail());
+    public ResponseEntity<?> getConversation(@RequestParam final String senderEmail, @RequestParam final String receiverEmail) {
+        User sender = this.userService.getUser(senderEmail);
+        User receiver = this.userService.getUser(receiverEmail);
         if(sender == null || receiver == null) {
             return new ResponseEntity<>(new ErrorDto("No sender or receiver found."), HttpStatus.NOT_FOUND);
         }
@@ -136,19 +137,20 @@ public class ChatController {
             System.out.println(Arrays.toString(exception.getStackTrace()));
             return ResponseEntity.internalServerError().body(new ErrorDto("Error: Internal server error."));
         }
-        return ResponseEntity.ok().body(new SuccessResponseDto("Conversation successfully created."));
+        return new ResponseEntity<>(new SuccessResponseDto("Conversation successfully created."), HttpStatus.CREATED);
     }
 
-//    @GetMapping("/user/{id}")
-//    public ResponseEntity<ApiResponseDto> getUser(@PathVariable("id") final Long id) {
-//        try{
-//            User user = this.userService.getUser()
-//        } catch(Exception exception) {
-//            logger.debug(Arrays.toString(exception.getStackTrace()));
-//            logger.error(exception.getMessage());
-//            System.out.println(exception.getMessage());
-//            System.out.println(Arrays.toString(exception.getStackTrace()));
-//            return ResponseEntity.internalServerError().body(new ErrorDto("Error: Internal server error."));
-//        }
-//    }
+    @GetMapping("/contacts")
+    public ResponseEntity<?> getContacts() {
+        try{
+            List<User> users = this.userService.getUsers();
+            return new ResponseEntity<>(this.abstractConversationUserMapper.toDtos(users), HttpStatus.OK);
+        } catch(Exception exception) {
+            logger.debug(Arrays.toString(exception.getStackTrace()));
+            logger.error(exception.getMessage());
+            System.out.println(exception.getMessage());
+            System.out.println(Arrays.toString(exception.getStackTrace()));
+            return ResponseEntity.internalServerError().body(new ErrorDto("Error: Internal server error."));
+        }
+    }
 }
