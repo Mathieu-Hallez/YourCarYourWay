@@ -1,8 +1,13 @@
 import { inject } from '@angular/core';
-import { CanActivateFn } from '@angular/router';
-import { SessionService } from '../services/session.service';
+import { CanActivateFn, Router } from '@angular/router';
+import { SessionService } from '../services/session/session.service';
 
 export const unAuthGuard: CanActivateFn = (route, state) => {
   const sessionService = inject(SessionService);
-  return !sessionService.isLogged();
+  const router = inject(Router);
+  if(sessionService.isLogged()) {
+    router.navigateByUrl('/chat');
+    return false;
+  }
+  return true;
 };
