@@ -9,10 +9,11 @@ import dayjs from 'dayjs';
 import { MessageTextInputComponent } from "../message-text-input/message-text-input.component";
 import { MessageComponent } from "../message/message.component";
 import { WebsocketService } from '../../services/websocket/websocket.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-conversation',
-  imports: [MessageTextInputComponent, MessageComponent],
+  imports: [MessageTextInputComponent, MessageComponent, CommonModule],
   templateUrl: './conversation.component.html',
   styleUrl: './conversation.component.scss'
 })
