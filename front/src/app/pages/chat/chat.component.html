@@ -1,1 +1,8 @@
-<p>chat works!</p>
+<div class="content">
+    <div class="contact-list">
+        <app-contact-list (onSelectConversation)="selectConversation($event)"></app-contact-list>
+    </div>
+    @if(receiverEmail != null) {
+        <app-conversation class="conversation" [receiverEmail]="receiverEmail" [senderEmail]="senderEmail"></app-conversation>
+    }
+</div>

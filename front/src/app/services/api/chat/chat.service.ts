@@ -20,7 +20,7 @@ export class ChatService {
   }
 
   getContacts() : Observable<Array<ContactDto>> {
-    return this.httpClient.get<Array<ContactDto>>(`${this.pathService}/contact`);
+    return this.httpClient.get<Array<ContactDto>>(`${this.pathService}/contacts`);
   }
 
 }
