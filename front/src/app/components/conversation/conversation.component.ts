@@ -8,6 +8,7 @@ import { ConversationUserDto } from '../../interfaces/ConversationUserDto';
 import dayjs from 'dayjs';
 import { MessageTextInputComponent } from "../message-text-input/message-text-input.component";
 import { MessageComponent } from "../message/message.component";
+import { WebsocketService } from '../../services/websocket/websocket.service';
 
 @Component({
   selector: 'app-conversation',
@@ -18,6 +19,7 @@ import { MessageComponent } from "../message/message.component";
 export class ConversationComponent implements OnInit, OnDestroy {
 
     private chatService = inject(ChatService);
+    private webSocketService = inject(WebsocketService);
 
     @Input({required: true})
     senderEmail! : string;
@@ -50,5 +52,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
         this.messages = conversationDto.messages.map((messageDto) => {
             return new Message(messageDto.id, messageDto.parentId, messageDto.content, messageDto.isRead, messageDto.sender, messageDto.receiver, dayjs(messageDto.createdAt).format("DD/MM/YYYY HH:mm"));
         });
+
+        this.webSocketService.onConnect();
     }
 }
