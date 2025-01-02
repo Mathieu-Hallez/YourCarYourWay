@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, output, Output, OutputEmitterRef } from '@angular/core';
 import { Contact } from '../../models/Contact';
 
 @Component({
@@ -10,4 +10,10 @@ import { Contact } from '../../models/Contact';
 export class ContactTileComponent {
   @Input()
   contact! : Contact;
+
+  onContactUpdate : OutputEmitterRef<string> = output<string>();
+
+  onClick(): void {
+    this.onContactUpdate.emit(this.contact.$email);
+  }
 }

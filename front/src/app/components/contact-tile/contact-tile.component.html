@@ -1,3 +1,5 @@
 <div>
-    <span>{{ contact.$firstName }} | {{ contact.$lastname }}</span>
+    <button mat-button (click)="onClick()">
+        <span>{{ contact.$firstName }} {{ contact.$lastname }}</span>
+    </button>
 </div>
