@@ -1,9 +1,9 @@
 export interface MessageDto {
     id : number;
-    parentId : number;
-    content : string;
-    isRead : boolean;
+    parent_id : number;
+    text : string;
+    is_read : boolean;
     sender : string;
     receiver : string;
-    createdAt : string;
+    created_at : string;
 }
