@@ -54,10 +54,11 @@ export class WebsocketService {
     }
   }
 
-  sendMessage(message : string, receiverEmail? : string) {
+  sendMessage(message : string, receiverEmail? : string, lastMessageId? : number) {
     if(!this.stompClient?.connected || !this.sessionService.isLogged || !receiverEmail) return;
 
     const chatMessage = {
+      parentId: lastMessageId ?? null,
       text: message,
       senderEmail: this.sessionService.session?.$email,
       receiverEmail: receiverEmail,

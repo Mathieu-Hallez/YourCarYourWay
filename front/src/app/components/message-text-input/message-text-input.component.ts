@@ -19,12 +19,15 @@ export class MessageTextInputComponent {
   @Input({ required: true })
   receiver! : string;
 
+  @Input()
+  lastMessageId! : number | undefined;
+
   formObject : any = {
     message : ''
   }
 
   onSendMessage(): void {
-    this.webSocketService.sendMessage(this.formObject.message, this.localStorageService.get<string>('receiverSelected') ?? undefined);
+    this.webSocketService.sendMessage(this.formObject.message, this.localStorageService.get<string>('receiverSelected') ?? undefined, this.lastMessageId);
   }
 
 }
