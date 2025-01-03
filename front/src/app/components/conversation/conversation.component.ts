@@ -51,7 +51,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
         this.subject = conversationDto.subject ?? null;
 
         this.messages = conversationDto.messages.map((messageDto) => {
-            return new Message(messageDto.id, messageDto.parentId, messageDto.content, messageDto.isRead, messageDto.sender, messageDto.receiver, dayjs(messageDto.createdAt).format("DD/MM/YYYY HH:mm"));
+            return new Message(messageDto.id, messageDto.parent_id, messageDto.text, messageDto.is_read, messageDto.sender, messageDto.receiver, dayjs(messageDto.created_at).format("DD/MM/YYYY HH:mm"));
         });
 
         this.webSocketService.onConnect();
