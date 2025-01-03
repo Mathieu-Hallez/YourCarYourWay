@@ -38,6 +38,8 @@ public class SpringSecurityConfig {
 
     public static final String[] PUBLIC_PATHS = {
             "/api/authentication/**",
+            "/api/chat/conversation/**",
+            "/api/chat/message/**",
             "/api-docs.yaml",
             "/api-docs/**",
             "/api-docs",
