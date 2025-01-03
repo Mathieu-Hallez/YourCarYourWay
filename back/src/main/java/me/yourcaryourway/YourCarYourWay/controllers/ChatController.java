@@ -46,6 +46,9 @@ public class ChatController {
     @PostMapping("/message/save")
     public ResponseEntity<ApiResponseDto> saveMessage(@RequestBody final SaveMessageDto saveMessageDto) {
         try {
+            if(saveMessageDto.getParentMessageId() == null) {
+                return new ResponseEntity<>(new ErrorDto("Message hasn't message parent"), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
             Message messageToSave = this.abstractMessageMapper.toEntity(saveMessageDto);
             if(messageToSave == null) {
                 return new ResponseEntity<>(new ErrorDto("No message to save."), HttpStatus.NOT_FOUND);
