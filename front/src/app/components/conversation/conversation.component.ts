@@ -8,16 +8,19 @@ import { ConversationUserDto } from '../../interfaces/ConversationUserDto';
 import dayjs from 'dayjs';
 import { MessageTextInputComponent } from "../message-text-input/message-text-input.component";
 import { MessageComponent } from "../message/message.component";
+import { WebsocketService } from '../../services/websocket/websocket.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-conversation',
-  imports: [MessageTextInputComponent, MessageComponent],
+  imports: [MessageTextInputComponent, MessageComponent, CommonModule],
   templateUrl: './conversation.component.html',
   styleUrl: './conversation.component.scss'
 })
 export class ConversationComponent implements OnInit, OnDestroy {
 
     private chatService = inject(ChatService);
+    private webSocketService = inject(WebsocketService);
 
     @Input({required: true})
     senderEmail! : string;
@@ -48,7 +51,9 @@ export class ConversationComponent implements OnInit, OnDestroy {
         this.subject = conversationDto.subject ?? null;
 
         this.messages = conversationDto.messages.map((messageDto) => {
-            return new Message(messageDto.id, messageDto.parentId, messageDto.content, messageDto.isRead, messageDto.sender, messageDto.receiver, dayjs(messageDto.createdAt).format("DD/MM/YYYY HH:mm"));
+            return new Message(messageDto.id, messageDto.parent_id, messageDto.text, messageDto.is_read, messageDto.sender, messageDto.receiver, dayjs(messageDto.created_at).format("DD/MM/YYYY HH:mm"));
         });
+
+        this.webSocketService.onConnect();
     }
 }

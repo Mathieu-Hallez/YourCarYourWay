@@ -1,7 +1,9 @@
 import { Component, inject, Input } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { WebsocketService } from '../../services/websocket/websocket.service';
+import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-message-text-input',
@@ -11,6 +13,9 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class MessageTextInputComponent {
 
+  private webSocketService = inject(WebsocketService);
+  private localStorageService = inject(LocalStorageService);
+
   @Input({ required: true })
   receiver! : string;
 
@@ -19,8 +24,7 @@ export class MessageTextInputComponent {
   }
 
   onSendMessage(): void {
-    const formValue = this.formObject;
-    // TODO Send message to Websocket
+    this.webSocketService.sendMessage(this.formObject.message, this.localStorageService.get<string>('receiverSelected') ?? undefined);
   }
 
 }

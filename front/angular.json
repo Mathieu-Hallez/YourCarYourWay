@@ -18,10 +18,12 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/your-car-your-way",
+            "allowedCommonJsDependencies": ["sockjs-client", "stompjs"],
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
-              "zone.js"
+              "zone.js",
+              "src/window-global-fix.ts"
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",

@@ -16,11 +16,11 @@ export class ChatService {
   ) { }
 
   getConversation(senderEmail : string, receiverEmail : string) : Observable<ConversationDto> {
-    return this.httpClient.get<ConversationDto>(`${this.pathService}/conversation?sender=${senderEmail}&receiver=${receiverEmail}`);
+    return this.httpClient.get<ConversationDto>(`${this.pathService}/conversation?senderEmail=${senderEmail}&receiverEmail=${receiverEmail}`);
   }
 
   getContacts() : Observable<Array<ContactDto>> {
-    return this.httpClient.get<Array<ContactDto>>(`${this.pathService}/contact`);
+    return this.httpClient.get<Array<ContactDto>>(`${this.pathService}/contacts`);
   }
 
 }
