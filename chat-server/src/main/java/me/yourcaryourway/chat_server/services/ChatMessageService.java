@@ -20,7 +20,7 @@ public class ChatMessageService {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<SaveMessageDto> request = new HttpEntity<>(
                 SaveMessageDto.builder()
-                    .id(chatMessage.getId())
+                    .id(chatMessage.getId() != null ? chatMessage.getId() : 0)
                     .parentMessageId(chatMessage.getParentId())
                     .type("CHAT")
                     .text(chatMessage.getText())
