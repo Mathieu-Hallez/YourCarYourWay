@@ -1,5 +1,6 @@
 package me.yourcaryourway.chat_server.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -14,6 +15,8 @@ public class ChatMessage {
     private Long parentId;
     @NotNull
     private String text;
+    @Nullable
+    private String subject;
     @Nullable
     private Boolean isRead;
     @NotNull

@@ -1,0 +1,16 @@
+package me.yourcaryourway.chat_server.models.api;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class CreateConversationDto {
+    @NotNull
+    private String subject;
+    @NotNull
+    @JsonProperty("message")
+    private MessageDto messageDto;
+}

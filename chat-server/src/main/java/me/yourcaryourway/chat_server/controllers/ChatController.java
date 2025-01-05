@@ -24,11 +24,21 @@ public class ChatController {
     @MessageMapping("/chat")
     public void processMessage(@Payload ChatMessage chatMessage) {
         System.out.println("Chat message to send: " + chatMessage.toString());
+        ChatMessage lastMessage = this.chatMessageService.getLastMessage(chatMessage.getSenderEmail(), chatMessage.getReceiverEmail());
+        System.out.println("last Message : " + lastMessage);
         //TODO
-        //Récuperer le dernier message entre sender et receiver
-        // SI existe donne son id à parentID
+        // Récuperer le dernier message entre sender et receiver
+        // Si existe donne son id à parentID
         // Sinon créer une conversation
-        ChatMessage savedMessage = this.chatMessageService.save(chatMessage);
+
+        ChatMessage savedMessage;
+        if(lastMessage != null) {
+            chatMessage.setParentId(lastMessage.getId());
+            savedMessage = this.chatMessageService.save(chatMessage);
+        } else {
+            savedMessage = this.chatMessageService.createConversation(chatMessage);
+        }
+
         ChatNotification chatNotification = ChatNotification.builder()
                 .id(savedMessage.getId().toString())
                 .senderEmail(savedMessage.getSenderEmail())
@@ -38,6 +48,11 @@ public class ChatController {
 
         this.simpMessagingTemplate.convertAndSendToUser(
                 chatMessage.getReceiverEmail(),
+                "/queue/messages",
+                chatNotification
+        );
+        this.simpMessagingTemplate.convertAndSendToUser(
+                chatMessage.getSenderEmail(),
                 "/queue/messages",
                 chatNotification
         );
