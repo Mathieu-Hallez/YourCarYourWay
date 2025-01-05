@@ -1,6 +1,6 @@
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ChatService } from '../../services/api/chat/chat.service';
-import { Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, catchError, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { ConversationDto } from '../../interfaces/ConversationDto';
 import { Message } from '../../models/Message';
 import { ConversationUserDto } from '../../interfaces/ConversationUserDto';
@@ -24,33 +24,50 @@ export class ConversationComponent implements OnInit, OnDestroy {
     @Input({required: true})
     senderEmail! : string;
 
-    @Input({required: true})
-    receiverEmail! : string;
+    @Input({required: true}) set receiverEmail(email : string) {
+        this.receiverEmail$.next(email);
+    }
+
+    private receiverEmail$ = new BehaviorSubject<string | null>(null);
 
     private destroy$ : Subject<boolean> = new Subject<boolean>();
 
     messages : Array<Message> = [];
     receiver! : ConversationUserDto;
     subject : string | null = null;
+    
 
     ngOnInit(): void {
-        this.chatService.getConversation(this.senderEmail, this.receiverEmail).pipe(
+        this.receiverEmail$.pipe(
+            switchMap((email) => {
+              if (!email) {
+                return of(null); // Retourner une liste vide si email est nul
+              }
+              return this.chatService.getConversation(this.senderEmail, email).pipe(
+                catchError((error) => {
+                  console.error('Erreur lors du chargement des messages', error);
+                  return of(null);
+                })
+              );
+            }),
             takeUntil(this.destroy$)
-        ).subscribe({
-            next: conversationDto => {
+        ).subscribe((conversationDto : ConversationDto | null) => {
+            if(conversationDto)
                 this.fetchConversation(conversationDto);
-            }
+            else
+                this.messages = [];
         });
+
         this.webSocketService.connect();
         this.webSocketService.receivedMessage$().subscribe({
             next: (message) => {
-                if(message)
+                if(message) {
                     this.messages.push(message);
+                }
             },
             error: (err) => {console.error(err)}
         });
     }
-
     ngOnDestroy(): void {
         this.destroy$.next(true);
         this.webSocketService.disconnect();
@@ -69,12 +86,13 @@ export class ConversationComponent implements OnInit, OnDestroy {
     }
 
     private sendMessage(message : string) {
-        if(this.receiverEmail == null) {
+        const receiverEmail = this.receiverEmail$.getValue();
+        if(receiverEmail == null) {
             console.error("No receiver selected.");
             return;
         }
-        this.webSocketService.sendMessage(message, this.receiverEmail);
+        this.webSocketService.sendMessage(message, receiverEmail);
     }
-
     sendMessageBind = this.sendMessage.bind(this);
 }
+
