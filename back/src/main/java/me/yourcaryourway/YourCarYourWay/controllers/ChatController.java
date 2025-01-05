@@ -85,6 +85,20 @@ public class ChatController {
         return ResponseEntity.ok(new SuccessResponseDto("Message successfully read."));
     }
 
+    @GetMapping("/message/last")
+    public ResponseEntity<?> getLastMessage(@RequestParam final String senderEmail, @RequestParam final String receiverEmail) {
+        User sender = this.userService.getUser(senderEmail);
+        User receiver = this.userService.getUser(receiverEmail);
+        if(sender == null || receiver == null) {
+            return new ResponseEntity<>(new ErrorDto("No sender or receiver found."), HttpStatus.NOT_FOUND);
+        }
+        Message lastMessage = this.messageService.getLastMessage(sender, receiver);
+        if(lastMessage == null) {
+            return new ResponseEntity<>(new ErrorDto("No message found."), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(this.abstractMessageMapper.toDto(lastMessage), HttpStatus.OK);
+    }
+
     @GetMapping("/conversation")
     public ResponseEntity<?> getConversation(@RequestParam final String senderEmail, @RequestParam final String receiverEmail) {
         User sender = this.userService.getUser(senderEmail);
@@ -132,7 +146,7 @@ public class ChatController {
             message.setSender(sender);
             message.setReceiver(receiver);
 
-            this.messageService.saveMessage(message);
+            return new ResponseEntity<>(this.abstractMessageMapper.toDto(this.messageService.saveMessage(message)), HttpStatus.CREATED);
         } catch(Exception exception) {
             logger.debug(Arrays.toString(exception.getStackTrace()));
             logger.error(exception.getMessage());
@@ -140,7 +154,6 @@ public class ChatController {
             System.out.println(Arrays.toString(exception.getStackTrace()));
             return ResponseEntity.internalServerError().body(new ErrorDto("Error: Internal server error."));
         }
-        return new ResponseEntity<>(new SuccessResponseDto("Conversation successfully created."), HttpStatus.CREATED);
     }
 
     @GetMapping("/contacts")
