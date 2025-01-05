@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
@@ -12,17 +12,16 @@ import { MatInputModule } from '@angular/material/input';
 export class MessageTextInputComponent {
 
   @Input({ required: true })
-  receiver! : string;
-
-  @Input({ required: true })
   sendMessage! : (message : string) => void;
 
   formObject : any = {
     message : ''
   }
 
-  onSendMessage() {
+  onSendMessage(form : NgForm) {
     this.sendMessage(this.formObject.message);
-    this.formObject['message'] = '';
+    form.reset({
+      message: ''
+    });
   }
 }
