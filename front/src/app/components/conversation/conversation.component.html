@@ -1,4 +1,4 @@
 <div>
     <app-message *ngFor="let message of messages" [message]="message"></app-message>
-    <app-message-text-input [receiver]="receiverEmail"></app-message-text-input>
+    <app-message-text-input [receiver]="receiverEmail" [sendMessage]="sendMessageBind"></app-message-text-input>
 </div>

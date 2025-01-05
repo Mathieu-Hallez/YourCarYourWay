@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { ChatService } from '../../services/api/chat/chat.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -38,12 +37,32 @@ export class ConversationComponent implements OnInit, OnDestroy {
         this.chatService.getConversation(this.senderEmail, this.receiverEmail).pipe(
             takeUntil(this.destroy$)
         ).subscribe({
-            next: conversationDto => this.fetchConversation(conversationDto)
-        })
+            next: conversationDto => {
+                this.fetchConversation(conversationDto);
+                this.webSocketService.connect();
+                this.webSocketService.receivedMessage$().subscribe({
+                    next: (chatMessage) => {
+                        this.messages.push(
+                            new Message(
+                                chatMessage.$id ?? 0,
+                                chatMessage.$parentId ?? 0,
+                                chatMessage.$text,
+                                chatMessage.$isRead ?? false,
+                                chatMessage.$senderEmail,
+                                chatMessage.$receiverEmail,
+                                dayjs().format("DD/MM/YYYY HH:mm")
+                            )
+                        );
+                    },
+                    error: (err) => {console.error(err)}
+                });
+            }
+        });
     }
 
     ngOnDestroy(): void {
         this.destroy$.next(true);
+        this.webSocketService.disconnect();
     }
 
     public fetchConversation(conversationDto : ConversationDto) {
@@ -53,7 +72,18 @@ export class ConversationComponent implements OnInit, OnDestroy {
         this.messages = conversationDto.messages.map((messageDto) => {
             return new Message(messageDto.id, messageDto.parent_id, messageDto.text, messageDto.is_read, messageDto.sender, messageDto.receiver, dayjs(messageDto.created_at).format("DD/MM/YYYY HH:mm"));
         });
-
-        this.webSocketService.onConnect();
+        this.messages.sort((a, b) => {
+            return dayjs(a.$createdAt).isBefore(b.$createdAt) ? -1 : 1;
+        })      
     }
+
+    private sendMessage(message : string) {
+        if(this.receiverEmail == null) {
+            console.error("No receiver selected.");
+            return;
+        }
+        this.webSocketService.sendMessage(message, this.receiverEmail);
+    }
+
+    sendMessageBind = this.sendMessage.bind(this);
 }
