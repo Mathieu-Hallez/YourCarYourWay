@@ -1,3 +1,5 @@
-<div>
-    <app-contact-tile *ngFor="let contact of contacts" [contact]="contact" (onContactUpdate)="selectConversation($event)"></app-contact-tile>
+<div class="contact-list">
+    <ul>
+        <app-contact-tile *ngFor="let contact of contacts" [contact]="contact" (onContactUpdate)="selectConversation($event)"></app-contact-tile>
+    </ul>
 </div>

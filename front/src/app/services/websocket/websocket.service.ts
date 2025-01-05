@@ -3,7 +3,10 @@ import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 import { SessionService } from '../session/session.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ChatMessage } from '../../models/ChatMessage';
+import { Message } from '../../models/Message';
+import { NotificationMessage } from '../../interfaces/websocket/NotificationMessage';
+import { ChatMessage } from '../../interfaces/websocket/ChatMessage';
+import dayjs from 'dayjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +17,7 @@ export class WebsocketService {
 
   private stompClient! : Client;
 
-  private $receivedMessageSubject: BehaviorSubject<ChatMessage> = new BehaviorSubject<ChatMessage>(new ChatMessage("","","",""));
+  private $receivedMessageSubject: BehaviorSubject<Message | undefined> = new BehaviorSubject<Message | undefined>(undefined);
 
   constructor() {
     this.stompClient = new Client({
@@ -35,28 +38,28 @@ export class WebsocketService {
     })
   }
 
-  receivedMessage$(): Observable<ChatMessage> {
+  receivedMessage$(): Observable<Message | undefined> {
     return this.$receivedMessageSubject.asObservable();
   }
 
   private onMessageReceived(payload : any) {
-    const message = JSON.parse(payload.body);
-    this.$receivedMessageSubject.next(new ChatMessage(message.content, message.senderEmail, message.receiverEmail, message.type, message.id ?? null, message.parentId ?? null, message.isRead ?? null));
+    const message : NotificationMessage = JSON.parse(payload.body);
+    this.$receivedMessageSubject.next(new Message(message.id, message.parent, message.text, message.is_read, message.sender, message.receiver, dayjs(message.created_at).format("DD/MM/YYYY HH:mm")));
   }
 
   sendMessage(message : string, receiverEmail : string) {
-    if(!this.stompClient?.connected || !this.sessionService.isLogged || !receiverEmail) return;
+    if(!this.stompClient?.connected || !this.sessionService.isLogged || !receiverEmail || !this.sessionService.session) return;
 
-    const chatMessage = {
+    const chatMessage : ChatMessage = {
       text: message,
-      senderEmail: this.sessionService.session?.$email,
+      senderEmail: this.sessionService.session.$email,
       receiverEmail: receiverEmail,
       type: 'CHAT'
     };
 
     this.stompClient?.publish({
       destination:'/app/chat',
-      body:JSON.stringify(chatMessage)
+      body: JSON.stringify(chatMessage)
     });
   }
 

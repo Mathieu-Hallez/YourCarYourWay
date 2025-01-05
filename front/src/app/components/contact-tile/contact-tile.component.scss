@@ -1,0 +1,35 @@
+.contact-item {
+    margin-bottom: 10px;
+
+    .contact-button {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        text-align: left;
+        font-size: 16px;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+
+        &:hover {
+            background-color: #e0e0e0;
+            border-color: #ccc;
+        }
+
+        &:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+    }
+}
+
+/* Responsiveness pour les petits écrans */
+@media (max-width: 768px) {
+    .contact-button {
+        padding: 12px; /* Réduit le padding sur petits écrans */
+        font-size: 14px; /* Réduit la taille de la police */
+    }
+}

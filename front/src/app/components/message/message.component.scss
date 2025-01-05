@@ -1,0 +1,50 @@
+li {
+    width: 100%;
+}
+
+.message {
+    display: flex;
+    margin-bottom: 15px;
+    flex-direction: column;
+    align-items: flex-start;
+  
+    &-content {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 8px;
+      word-wrap: break-word;
+      margin: 0;
+      margin-bottom: 5px;
+    }
+  
+    &-meta {
+      margin-top: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      row-gap: 5px;
+      font-size: 0.9em;
+      color: #333;
+
+      .source {
+        margin-right: 15px;
+      }
+    }
+  
+    &.sent {
+        align-items: flex-end;
+
+      .message-content {
+        margin-left: auto;
+        background-color: lighten(#4CAF50, 10%);
+      }
+  
+      .message-meta {
+        flex-direction: row-reverse;
+        .source {
+            margin-left: 15px;
+          }
+      }
+    }
+  }

@@ -1,0 +1,27 @@
+.conversation {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background-color: #ffffff;
+    // border-right: 1px solid #ddd;
+  
+    .messages-list {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        overflow-y: auto;
+        padding-top: 0;
+        height: 100%;
+        padding: 20px;
+
+        ul {
+            list-style: none;
+            padding: 1rem;
+            margin: 0;
+            height: 78vh;
+            overflow-y: scroll;
+        }
+    }
+  }

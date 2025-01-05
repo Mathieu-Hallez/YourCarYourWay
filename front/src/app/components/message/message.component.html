@@ -1,7 +1,7 @@
-<div>
-    <p>{{message.$content}}</p>
-    <div>
-        <span>{{message.$sender}}</span>
-        <span>{{message.$createdAt}}</span>
+<li class="message" [ngClass]="{ 'sent': isSent }">
+    <p class="message-content">{{message.$content}}</p>
+    <div class="message-meta">
+        <span class="source">{{isSent ? 'Me' : message.$sender}}</span>
+        <span class="date">{{message.$createdAt}}</span>
     </div>
-</div>
+</li>

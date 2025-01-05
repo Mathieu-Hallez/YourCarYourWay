@@ -1,4 +1,8 @@
-<div>
-    <app-message *ngFor="let message of messages" [message]="message"></app-message>
-    <app-message-text-input [receiver]="receiverEmail" [sendMessage]="sendMessageBind"></app-message-text-input>
+<div class="conversation">
+    <div class="messages-list">
+        <ul>
+            <app-message *ngFor="let message of messages" [message]="message"></app-message>
+        </ul>
+    </div>
+    <app-message-text-input [sendMessage]="sendMessageBind"></app-message-text-input>
 </div>
