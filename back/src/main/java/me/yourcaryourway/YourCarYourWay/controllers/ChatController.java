@@ -19,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,18 +46,22 @@ public class ChatController {
     private AbstractMessageMapper abstractMessageMapper;
 
     @PostMapping("/message/save")
-    public ResponseEntity<ApiResponseDto> saveMessage(@RequestBody final SaveMessageDto saveMessageDto) {
+    public ResponseEntity<?> saveMessage(@RequestBody final SaveMessageDto saveMessageDto) {
         try {
             if(saveMessageDto.getParentMessageId() == null) {
                 return new ResponseEntity<>(new ErrorDto("Message hasn't message parent"), HttpStatus.INTERNAL_SERVER_ERROR);
             }
+
             Message messageToSave = this.abstractMessageMapper.toEntity(saveMessageDto);
             if(messageToSave == null) {
                 return new ResponseEntity<>(new ErrorDto("No message to save."), HttpStatus.NOT_FOUND);
             }
-            messageToSave.setSubject(Objects.requireNonNullElse(messageToSave.getParent(), null).getSubject());
+            if(messageToSave.getParent() == null) {
+                return new ResponseEntity<>(new ErrorDto("Unknown parent message"), HttpStatus.NOT_FOUND);
+            }
+            messageToSave.setSubject(messageToSave.getParent().getSubject());
 
-            return ResponseEntity.ok(this.abstractMessageMapper.toDto(this.messageService.saveMessage(messageToSave)));
+            return new ResponseEntity<MessageDto>(this.abstractMessageMapper.toDto(this.messageService.saveMessage(messageToSave)), HttpStatus.OK);
         } catch(Exception exception) {
             logger.debug(Arrays.toString(exception.getStackTrace()));
             logger.error(exception.getMessage());
@@ -135,7 +141,7 @@ public class ChatController {
     @PostMapping("/conversation/create")
     public ResponseEntity<ApiResponseDto> createConversation(@RequestBody final CreateConversationDto createConversationDto) {
         try{
-            MessageDto messageDto = createConversationDto.getMessageDto();
+            CreateMessageDto messageDto = createConversationDto.getMessageDto();
             User sender = this.userService.getUser(messageDto.getSenderEmail());
             User receiver = this.userService.getUser(messageDto.getReceiverEmail());
             if(sender == null || receiver == null) {
@@ -145,6 +151,8 @@ public class ChatController {
             message.setSubject(createConversationDto.getSubject());
             message.setSender(sender);
             message.setReceiver(receiver);
+            message.setCreatedAt(Timestamp.from(Instant.now()));
+            message.setIsRead(false);
 
             return new ResponseEntity<>(this.abstractMessageMapper.toDto(this.messageService.saveMessage(message)), HttpStatus.CREATED);
         } catch(Exception exception) {

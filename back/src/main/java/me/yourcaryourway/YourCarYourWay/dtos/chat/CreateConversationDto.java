@@ -11,5 +11,5 @@ public class CreateConversationDto implements ApiResponseDto {
     private String subject;
     @NotNull
     @JsonProperty("message")
-    private MessageDto messageDto;
+    private CreateMessageDto messageDto;
 }

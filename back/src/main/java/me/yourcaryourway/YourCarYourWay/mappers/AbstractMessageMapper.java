@@ -1,5 +1,7 @@
 package me.yourcaryourway.YourCarYourWay.mappers;
 
+import me.yourcaryourway.YourCarYourWay.dtos.chat.AbstractMessageDto;
+import me.yourcaryourway.YourCarYourWay.dtos.chat.CreateMessageDto;
 import me.yourcaryourway.YourCarYourWay.dtos.chat.MessageDto;
 import me.yourcaryourway.YourCarYourWay.dtos.chat.SaveMessageDto;
 import me.yourcaryourway.YourCarYourWay.models.Message;
@@ -28,7 +30,7 @@ import java.time.format.DateTimeFormatter;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION
 )
-public abstract class AbstractMessageMapper implements EntityMapper<MessageDto, Message>{
+public abstract class AbstractMessageMapper implements EntityMapper<AbstractMessageDto, Message>{
 
     @Autowired
     MessageService messageService;
@@ -55,12 +57,19 @@ public abstract class AbstractMessageMapper implements EntityMapper<MessageDto, 
     public abstract Message toEntity(MessageDto messageDto);
 
     @Mappings({
-            @Mapping(target = "createdAt", expression = "java(saveMessageDto.getCreatedAt() == null ? Timestamp.from(Instant.now()) : Timestamp.valueOf(saveMessageDto.getCreatedAt()))"),
+            @Mapping(target = "createdAt", expression = "java(Timestamp.from(Instant.now()))"),
             @Mapping(target = "parent", expression = "java(saveMessageDto.getParentMessageId() != null ? this.messageService.getMessage(saveMessageDto.getParentMessageId()) : null)"),
-            @Mapping(target = "isRead", expression = "java(saveMessageDto.getIsRead() == null ? false : saveMessageDto.getIsRead())"),
+            @Mapping(target = "isRead", expression = "java(false)"),
             @Mapping(target = "type", expression = "java(this.messageService.getType(saveMessageDto.getType()))"),
             @Mapping(target = "sender", expression = "java(this.userService.getUser(saveMessageDto.getSenderEmail()))"),
             @Mapping(target = "receiver", expression = "java(this.userService.getUser(saveMessageDto.getReceiverEmail()))"),
     })
     public abstract Message toEntity(SaveMessageDto saveMessageDto);
+
+    @Mappings({
+            @Mapping(target = "type", expression = "java(this.messageService.getType(createMessageDto.getType()))"),
+            @Mapping(target = "sender", expression = "java(this.userService.getUser(createMessageDto.getSenderEmail()))"),
+            @Mapping(target = "receiver", expression = "java(this.userService.getUser(createMessageDto.getReceiverEmail()))"),
+    })
+    public abstract Message toEntity(CreateMessageDto createMessageDto);
 }

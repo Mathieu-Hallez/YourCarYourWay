@@ -3,6 +3,11 @@ package me.yourcaryourway.chat_server.controllers;
 import lombok.RequiredArgsConstructor;
 import me.yourcaryourway.chat_server.models.ChatMessage;
 import me.yourcaryourway.chat_server.models.ChatNotification;
+import me.yourcaryourway.chat_server.models.MessageType;
+import me.yourcaryourway.chat_server.models.api.CreateConversationDto;
+import me.yourcaryourway.chat_server.models.api.CreateMessageDto;
+import me.yourcaryourway.chat_server.models.api.MessageDto;
+import me.yourcaryourway.chat_server.models.api.SaveMessageDto;
 import me.yourcaryourway.chat_server.services.ChatMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -23,27 +28,43 @@ public class ChatController {
 
     @MessageMapping("/chat")
     public void processMessage(@Payload ChatMessage chatMessage) {
-        System.out.println("Chat message to send: " + chatMessage.toString());
-        ChatMessage lastMessage = this.chatMessageService.getLastMessage(chatMessage.getSenderEmail(), chatMessage.getReceiverEmail());
-        System.out.println("last Message : " + lastMessage);
-        //TODO
-        // Récuperer le dernier message entre sender et receiver
-        // Si existe donne son id à parentID
-        // Sinon créer une conversation
+        MessageDto lastMessage = this.chatMessageService.getLastMessage(chatMessage.getSenderEmail(), chatMessage.getReceiverEmail());
 
-        ChatMessage savedMessage;
+        MessageDto messageDto;
         if(lastMessage != null) {
-            chatMessage.setParentId(lastMessage.getId());
-            savedMessage = this.chatMessageService.save(chatMessage);
+            messageDto = this.chatMessageService.save(
+                SaveMessageDto.builder()
+                    .parentMessageId(lastMessage.getId())
+                    .text(chatMessage.getText())
+                    .type("CHAT")
+                    .senderEmail(chatMessage.getSenderEmail())
+                    .receiverEmail(chatMessage.getReceiverEmail())
+                    .build()
+            );
         } else {
-            savedMessage = this.chatMessageService.createConversation(chatMessage);
+            messageDto = this.chatMessageService.createConversation(
+                CreateConversationDto.builder()
+                    .subject("SupportChat")
+                    .messageDto(CreateMessageDto.builder()
+                        .type("CHAT")
+                        .text(chatMessage.getText())
+                        .senderEmail(chatMessage.getSenderEmail())
+                        .receiverEmail(chatMessage.getReceiverEmail())
+                        .build()
+                    )
+                    .build()
+            );
         }
 
         ChatNotification chatNotification = ChatNotification.builder()
-                .id(savedMessage.getId().toString())
-                .senderEmail(savedMessage.getSenderEmail())
-                .receiverEmail(savedMessage.getReceiverEmail())
-                .content(savedMessage.getText())
+                .id(messageDto.getId())
+                .parent(messageDto.getParentMessageId())
+                .text(messageDto.getText())
+                .isRead(messageDto.getIsRead())
+                .sender(messageDto.getSenderEmail())
+                .receiver(messageDto.getReceiverEmail())
+                .type(MessageType.valueOf(messageDto.getType()))
+                .createdAt(messageDto.getCreatedAt())
                 .build();
 
         this.simpMessagingTemplate.convertAndSendToUser(

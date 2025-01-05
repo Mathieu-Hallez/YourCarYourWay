@@ -12,5 +12,5 @@ public class CreateConversationDto {
     private String subject;
     @NotNull
     @JsonProperty("message")
-    private MessageDto messageDto;
+    private CreateMessageDto messageDto;
 }
