@@ -2,6 +2,7 @@ package me.yourcaryourway.chat_server.services;
 
 import me.yourcaryourway.chat_server.models.ChatMessage;
 import me.yourcaryourway.chat_server.models.api.CreateConversationDto;
+import me.yourcaryourway.chat_server.models.api.CreateMessageDto;
 import me.yourcaryourway.chat_server.models.api.MessageDto;
 import me.yourcaryourway.chat_server.models.api.SaveMessageDto;
 import me.yourcaryourway.chat_server.configurations.properties.ApiConfigProperties;
@@ -22,38 +23,19 @@ public class ChatMessageService {
     private final String controller = "/chat";
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public ChatMessage save(ChatMessage chatMessage) {
-        HttpEntity<SaveMessageDto> request = new HttpEntity<>(
-                SaveMessageDto.builder()
-                    .id(chatMessage.getId() != null ? chatMessage.getId() : null)
-                    .parentMessageId(chatMessage.getParentId())
-                    .type("CHAT")
-                    .text(chatMessage.getText())
-                    .senderEmail(chatMessage.getSenderEmail())
-                    .receiverEmail(chatMessage.getReceiverEmail())
-                    .build()
-        );
-        System.out.println("Save Message Dto: " + request.getBody());
-        ResponseEntity<SaveMessageDto> responseEntity = this.restTemplate.exchange(
+    public MessageDto save(SaveMessageDto saveMessageDto) {
+        HttpEntity<SaveMessageDto> request = new HttpEntity<>(saveMessageDto);
+        ResponseEntity<MessageDto> responseEntity = this.restTemplate.exchange(
                 this.apiConfigProperties.baseUrl() + controller + "/message/save",
                 HttpMethod.POST,
                 request,
-                SaveMessageDto.class
+                MessageDto.class
 
         );
-        SaveMessageDto saveMessageDto = responseEntity.getBody();
-        return ChatMessage.builder()
-                .id(saveMessageDto.getId())
-                .isRead(false)
-                .parentId(saveMessageDto.getParentMessageId())
-                .senderEmail(saveMessageDto.getSenderEmail())
-                .receiverEmail(saveMessageDto.getReceiverEmail())
-                .text(saveMessageDto.getText())
-                .isRead(saveMessageDto.getIsRead())
-                .build();
+        return responseEntity.getBody();
     }
 
-    public ChatMessage getLastMessage(String senderEmail, String receiverEmail) {
+    public MessageDto getLastMessage(String senderEmail, String receiverEmail) {
         try {
             String urlTemplate = UriComponentsBuilder.fromUriString(this.apiConfigProperties.baseUrl() + controller + "/message/last")
                     .queryParam("senderEmail", senderEmail)
@@ -64,15 +46,7 @@ public class ChatMessageService {
                     MessageDto.class
             );
 
-            MessageDto lastMessage = responseEntity.getBody();
-            return ChatMessage.builder()
-                    .id(lastMessage.getId())
-                    .isRead(false)
-                    .senderEmail(lastMessage.getSenderEmail())
-                    .receiverEmail(lastMessage.getReceiverEmail())
-                    .text(lastMessage.getText())
-                    .isRead(lastMessage.getIsRead())
-                    .build();
+            return responseEntity.getBody();
         } catch (HttpStatusCodeException httpStatusCodeException) {
             if(httpStatusCodeException.getStatusCode().value() == 404) {
                 return null;
@@ -81,20 +55,8 @@ public class ChatMessageService {
         }
     }
 
-    public ChatMessage createConversation(ChatMessage chatMessage) {
-        HttpEntity<CreateConversationDto> request = new HttpEntity<>(
-                CreateConversationDto.builder()
-                        .subject(chatMessage.getSubject())
-                        .messageDto(MessageDto.builder()
-                                .id(0L)
-                                .type("CHAT")
-                                .text(chatMessage.getText())
-                                .senderEmail(chatMessage.getSenderEmail())
-                                .receiverEmail(chatMessage.getReceiverEmail())
-                                .build()
-                        )
-                        .build()
-        );
+    public MessageDto createConversation(CreateConversationDto createConversationDto) {
+        HttpEntity<CreateConversationDto> request = new HttpEntity<>(createConversationDto);
         ResponseEntity<MessageDto> responseEntity = this.restTemplate.exchange(
             this.apiConfigProperties.baseUrl() + controller + "/conversation/create",
                 HttpMethod.POST,
@@ -102,14 +64,6 @@ public class ChatMessageService {
                 MessageDto.class
         );
 
-        MessageDto savedMessage = responseEntity.getBody();
-        return ChatMessage.builder()
-                .id(savedMessage.getId())
-                .isRead(false)
-                .senderEmail(savedMessage.getSenderEmail())
-                .receiverEmail(savedMessage.getReceiverEmail())
-                .text(savedMessage.getText())
-                .isRead(savedMessage.getIsRead())
-                .build();
+        return responseEntity.getBody();
     }
 }

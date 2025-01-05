@@ -1,16 +1,12 @@
-package me.yourcaryourway.chat_server.models.api;
+package me.yourcaryourway.YourCarYourWay.dtos.chat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.Data;
+import me.yourcaryourway.YourCarYourWay.dtos.ApiResponseDto;
 
 @Data
-@Builder
-public class SaveMessageDto {
-    @Nullable
-    @JsonProperty("parent_message_id")
-    private Long parentMessageId;
+public abstract class AbstractMessageDto implements ApiResponseDto {
     @NotNull
     private String text;
     @NotNull
@@ -21,4 +17,5 @@ public class SaveMessageDto {
     @NotNull
     @JsonProperty("receiver_email")
     private String receiverEmail;
+
 }

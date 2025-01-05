@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 public class MessageDto {
     @NotNull
     private Long id;
+    @Nullable
+    @JsonProperty("parent_message_id")
+    private Long parentMessageId;
     @NotNull
     private String text;
     @NotNull
