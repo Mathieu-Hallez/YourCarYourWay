@@ -8,9 +8,9 @@ import lombok.*;
 @Data
 @Builder
 public class SaveMessageDto {
-    @NotNull
+    @Nullable
     private Long id;
-    @NotNull
+    @Nullable
     @JsonProperty("parent_message_id")
     private Long parentMessageId;
     @NotNull

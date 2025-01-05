@@ -46,6 +46,9 @@ public class ChatController {
     @PostMapping("/message/save")
     public ResponseEntity<ApiResponseDto> saveMessage(@RequestBody final SaveMessageDto saveMessageDto) {
         try {
+            if(saveMessageDto.getParentMessageId() == null) {
+                return new ResponseEntity<>(new ErrorDto("Message hasn't message parent"), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
             Message messageToSave = this.abstractMessageMapper.toEntity(saveMessageDto);
             if(messageToSave == null) {
                 return new ResponseEntity<>(new ErrorDto("No message to save."), HttpStatus.NOT_FOUND);
@@ -80,6 +83,20 @@ public class ChatController {
             return ResponseEntity.internalServerError().body(new ErrorDto("Error: Internal server error."));
         }
         return ResponseEntity.ok(new SuccessResponseDto("Message successfully read."));
+    }
+
+    @GetMapping("/message/last")
+    public ResponseEntity<?> getLastMessage(@RequestParam final String senderEmail, @RequestParam final String receiverEmail) {
+        User sender = this.userService.getUser(senderEmail);
+        User receiver = this.userService.getUser(receiverEmail);
+        if(sender == null || receiver == null) {
+            return new ResponseEntity<>(new ErrorDto("No sender or receiver found."), HttpStatus.NOT_FOUND);
+        }
+        Message lastMessage = this.messageService.getLastMessage(sender, receiver);
+        if(lastMessage == null) {
+            return new ResponseEntity<>(new ErrorDto("No message found."), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(this.abstractMessageMapper.toDto(lastMessage), HttpStatus.OK);
     }
 
     @GetMapping("/conversation")
@@ -129,7 +146,7 @@ public class ChatController {
             message.setSender(sender);
             message.setReceiver(receiver);
 
-            this.messageService.saveMessage(message);
+            return new ResponseEntity<>(this.abstractMessageMapper.toDto(this.messageService.saveMessage(message)), HttpStatus.CREATED);
         } catch(Exception exception) {
             logger.debug(Arrays.toString(exception.getStackTrace()));
             logger.error(exception.getMessage());
@@ -137,7 +154,6 @@ public class ChatController {
             System.out.println(Arrays.toString(exception.getStackTrace()));
             return ResponseEntity.internalServerError().body(new ErrorDto("Error: Internal server error."));
         }
-        return new ResponseEntity<>(new SuccessResponseDto("Conversation successfully created."), HttpStatus.CREATED);
     }
 
     @GetMapping("/contacts")
