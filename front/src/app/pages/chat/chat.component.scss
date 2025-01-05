@@ -1,15 +1,22 @@
-.content{
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    flex-direction: row;
-}
+.chat-container {
+    flex:1;
+    display: flex; // Permet de placer la sidebar et la conversation côte à côte
+    flex-direction: row; // Organise horizontalement
+    // justify-content: stretch; // Étire les enfants sur l'axe horizontal
+    // align-items: stretch; // Aligne les enfants sur l'axe vertical
 
-.contact-list{
-    
-}
+    .side-bar {
+        width: 25%; // Largeur de la liste des contacts
+        background-color: #f4f4f4;
+        border-right: 1px solid #ddd;
+        display: flex;
+        flex-direction: column;
+    }
 
-.conversation{
-    width: 90%;
-    height: 100%;
+    .conversation-container {
+        flex:1;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+    }
 }
