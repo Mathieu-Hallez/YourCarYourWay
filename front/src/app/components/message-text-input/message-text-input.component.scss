@@ -1,9 +1,29 @@
-.example-form {
-    min-width: 150px;
-    max-width: 500px;
-    width: 100%;
-}
-
-.example-full-width {
-    width: 100%;
-}
+.chat-input {
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    display: flex;
+    background-color: #ffffff;
+  
+    textarea {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      resize: none;
+      font-size: 1em;
+    }
+  
+    button {
+      margin-left: 10px;
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  
+      &:hover {
+        background-color: darken(#4CAF50, 10%);
+      }
+    }
+  }

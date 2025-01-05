@@ -1,9 +1,7 @@
-import { Component, inject, Input } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { WebsocketService } from '../../services/websocket/websocket.service';
-import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-message-text-input',
@@ -13,18 +11,17 @@ import { LocalStorageService } from '../../services/local-storage/local-storage.
 })
 export class MessageTextInputComponent {
 
-  private webSocketService = inject(WebsocketService);
-  private localStorageService = inject(LocalStorageService);
-
   @Input({ required: true })
-  receiver! : string;
+  sendMessage! : (message : string) => void;
 
   formObject : any = {
     message : ''
   }
 
-  onSendMessage(): void {
-    this.webSocketService.sendMessage(this.formObject.message, this.localStorageService.get<string>('receiverSelected') ?? undefined);
+  onSendMessage(form : NgForm) {
+    this.sendMessage(this.formObject.message);
+    form.reset({
+      message: ''
+    });
   }
-
 }

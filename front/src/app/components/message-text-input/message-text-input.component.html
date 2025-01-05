@@ -1,16 +1,14 @@
-<form class="example-form">
-    <mat-form-field class="example-full-width">
+<form #form="ngForm" class="chat-form">
+    <mat-form-field class="chat-input">
         <div class="text-danger">
             @if(message.errors?.['required'] && message.touched && message.dirty) {
                 <span>Empty message</span>
             }
         </div>
-        <input matInput name="message" #message="ngModel" required [(ngModel)]="formObject.message" placeholder="Message">
+        <textarea matInput name="message" #message="ngModel" [(ngModel)]="formObject.message" placeholder="Taper votre message..."></textarea>
     </mat-form-field>
-    <div fxLayoutAlign="start center">
-        <button mat-icon-button type="submit" (click)="onSendMessage()" [disabled]="formObject.invalid">
-            Envoyer
-        </button>
-    </div>
+    <button mat-icon-button type="submit" (click)="onSendMessage(form)" [disabled]="formObject.invalid">
+        Envoyer
+    </button>
 </form>
   

@@ -3,7 +3,7 @@ export interface MessageDto {
     parent_id : number;
     text : string;
     is_read : boolean;
-    sender : string;
-    receiver : string;
+    sender_email : string;
+    receiver_email : string;
     created_at : string;
 }

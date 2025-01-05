@@ -1,6 +1,5 @@
-import { Component, inject, Input, output, Output, OutputEmitterRef } from '@angular/core';
+import { Component, Input, output, OutputEmitterRef } from '@angular/core';
 import { Contact } from '../../models/Contact';
-import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-contact-tile',
@@ -10,8 +9,6 @@ import { LocalStorageService } from '../../services/local-storage/local-storage.
 })
 export class ContactTileComponent {
 
-  private localStorageService = inject(LocalStorageService);
-
   @Input()
   contact! : Contact;
 
@@ -19,6 +16,5 @@ export class ContactTileComponent {
 
   onClick(): void {
     this.onContactUpdate.emit(this.contact.$email);
-    this.localStorageService.set('receiverSelected', this.contact.$email);
   }
 }
