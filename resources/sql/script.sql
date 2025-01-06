@@ -256,6 +256,6 @@ INSERT INTO MESSAGE_TYPE (name) VALUES ('CHAT');
 INSERT INTO MESSAGE_TYPE (name) VALUES ('MAIL');
 INSERT INTO USER (email, password, lastname, firstname, birth_date, address_id, role_id) VALUES ('client1@test.com', '$2a$10$J9eBtaA7YouyzXa2ipe7wOQ2OQyvV1XYaXZDDW3dCAykAvXWnQfQO', '1', 'client', '1995-05-25', '1', '1');
 INSERT INTO USER (email, password, lastname, firstname, birth_date, address_id, role_id) VALUES ('client2@test.com', '$2a$10$h.jamLfMDC5ar5E2KV8XO.njNtoNH.1U6.lBOYow7EYLNKhwUpDwi', '2', 'client', '1995-05-25', '2', '1');
-INSERT INTO USER (email, password, lastname, firstname, birth_date, address_id, role_id) VALUES ('support1@test.com', '$2a$10$ollBOaCt56GWOX7.UlkfMu8L/rsx9fdw6UjxFh5jT7ukHPsA4RbAW', '1', 'support', '2000-10-07', '1', '2');
+INSERT INTO USER (email, password, lastname, firstname, birth_date, address_id, role_id) VALUES ('support1@test.com', '$2a$10$S7k3pQTPiw8eT9akrLbBjuRJOh0O5gKrfzM7740sFv58aHyCiOp7O', '1', 'support', '2000-10-07', '1', '2');
 
 
