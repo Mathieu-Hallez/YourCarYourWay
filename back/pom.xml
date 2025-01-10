@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>me.yourcaryourway</groupId>
-	<artifactId>client-backend</artifactId>
+	<artifactId>web-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>YourCarYourWay_Backend</name>
+	<name>YourCarYourWay_WebAPI</name>
 	<description>PoC for client application</description>
 	<url/>
 	<licenses>
