@@ -1,59 +1,54 @@
-# YourCarYourWay
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![RxJS](https://img.shields.io/badge/rxjs-%23B7178C.svg?style=for-the-badge&logo=reactivex&logoColor=white)
+![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6.
+# Front
 
-## Development server
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6.
 
-To start a local development server, run:
+Don't forget to install [NodeJS](https://nodejs.org/fr) and your node_modules before starting (`npm install`).
 
-```bash
-ng serve
-```
+## Quick Start FE
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Build
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+# Environment installation procedure
 
-```bash
-ng generate --help
-```
+## NodeJs
 
-## Building
+The front part need NodeJs, download it [here](https://nodejs.org/en/download/current) and install it.
+When you finish to install NodeJs don't forget to download dependencies used by the project with:
+> npm install
 
-To build the project run:
+or
+> npm i
+---
 
-```bash
-ng build
-```
+## Project structure
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+| Folder        | Utility                                                   |
+|:--------------|:----------------------------------------------------------|
+| components    | Contains every reusable components                        |
+| guards        | Contains Access routing guard                             |
+| interceptors  | Contains all http requests interceptors                   |
+| interfaces    | Contains all dtos use by the API requests and responses   |
+| modules       | Contains all modules for organize components and routes   |
+| pages         | Contains components used for routing                      |
+| pipes         | Contains all customs pipes                                |
+| routers       | Contains all sub-routers                                  |
+| services      | Processing of received data.                              |
+| utils         | Sharing utils functions                                   |
 
-## Running unit tests
+---
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Licensing
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This project was built under the MIT licence.
