@@ -13,10 +13,7 @@ import me.yourcaryourway.YourCarYourWay_WebAPI.dtos.authentication.Authenticatio
 import me.yourcaryourway.YourCarYourWay_WebAPI.models.User;
 import me.yourcaryourway.YourCarYourWay_WebAPI.services.UserService;
 import me.yourcaryourway.YourCarYourWay_WebAPI.services.configurations.JWTService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +22,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,18 +29,12 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Authentication", description = "The Authentication API. Contains all the operations that can be performed for authentication.")
 public class AuthenticationController {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
-
     @Autowired
     private UserService userService;
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
     private JWTService jwtService;
-
-    @Autowired
-    @Lazy
-    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     @SecurityRequirements()

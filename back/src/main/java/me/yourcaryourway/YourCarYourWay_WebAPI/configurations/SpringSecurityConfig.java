@@ -56,7 +56,6 @@ public class SpringSecurityConfig {
                         auth -> {
                             auth.requestMatchers(PUBLIC_PATHS).permitAll();
                             auth.anyRequest().authenticated();
-//                            auth.anyRequest().permitAll();
                         }
                 )
                 .httpBasic(Customizer.withDefaults())

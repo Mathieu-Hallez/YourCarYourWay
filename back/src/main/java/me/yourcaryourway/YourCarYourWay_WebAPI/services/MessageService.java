@@ -20,13 +20,6 @@ public class MessageService {
     @Autowired
     private MessageTypeRepository messageTypeRepository;
 
-    public List<Message> getMessages(final User sender, final User receiver) {
-        return StreamSupport.stream(
-                    this.messageRepository.findAllBySenderAndReceiver(sender, receiver).spliterator(),
-                    false
-                ).toList();
-    }
-
     public Message getLastMessage(final User user1, final User user2) {
         Message messageUser1ToUser2 = this.messageRepository.findFirstBySenderIdAndReceiverIdOrderByCreatedAtDesc(user1.getId(), user2.getId()).orElse(null);
         Message messageUser2ToUser1 = this.messageRepository.findFirstBySenderIdAndReceiverIdOrderByCreatedAtDesc(user2.getId(), user1.getId()).orElse(null);
