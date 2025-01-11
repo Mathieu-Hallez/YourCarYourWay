@@ -1,16 +1,13 @@
-package me.yourcaryourway.chat_server.models.api;
+package me.yourcaryourway.chat_server.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 @Data
 @Builder
-public class SaveMessageDto {
-    @Nullable
-    @JsonProperty("parent_message_id")
-    private Long parentMessageId;
+public class CreateMessageDto {
     @NotNull
     private String text;
     @NotNull

@@ -1,16 +1,13 @@
 package me.yourcaryourway.chat_server.services;
 
-import me.yourcaryourway.chat_server.models.ChatMessage;
-import me.yourcaryourway.chat_server.models.api.CreateConversationDto;
-import me.yourcaryourway.chat_server.models.api.CreateMessageDto;
-import me.yourcaryourway.chat_server.models.api.MessageDto;
-import me.yourcaryourway.chat_server.models.api.SaveMessageDto;
+import me.yourcaryourway.chat_server.dtos.CreateConversationDto;
+import me.yourcaryourway.chat_server.dtos.MessageDto;
+import me.yourcaryourway.chat_server.dtos.SaveMessageDto;
 import me.yourcaryourway.chat_server.configurations.properties.ApiConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 

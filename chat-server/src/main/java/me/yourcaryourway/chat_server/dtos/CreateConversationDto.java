@@ -1,4 +1,4 @@
-package me.yourcaryourway.chat_server.models.api;
+package me.yourcaryourway.chat_server.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
