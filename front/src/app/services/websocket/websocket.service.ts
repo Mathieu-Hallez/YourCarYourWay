@@ -25,7 +25,6 @@ export class WebsocketService {
       reconnectDelay: 5000,
       webSocketFactory: () => {return new SockJS('http://localhost:8080/ws')},
       onConnect: (frame) => {
-        console.log('Connected: ' + frame);
         const onMessageReceivedBind = this.onMessageReceived.bind(this);
         this.stompClient.subscribe(`/user/${this.sessionService.session?.$email}/queue/messages`, onMessageReceivedBind);
       },
@@ -38,16 +37,16 @@ export class WebsocketService {
     })
   }
 
-  receivedMessage$(): Observable<Message | undefined> {
+  public receivedMessage$(): Observable<Message | undefined> {
     return this.$receivedMessageSubject.asObservable();
   }
 
-  private onMessageReceived(payload : any) {
+  private onMessageReceived(payload : any): void {
     const message : NotificationMessage = JSON.parse(payload.body);
     this.$receivedMessageSubject.next(new Message(message.id, message.parent, message.text, message.is_read, message.sender, message.receiver, dayjs(message.created_at).format("DD/MM/YYYY HH:mm")));
   }
 
-  sendMessage(message : string, receiverEmail : string) {
+  public sendMessage(message : string, receiverEmail : string): void {
     if(!this.stompClient?.connected || !this.sessionService.isLogged || !receiverEmail || !this.sessionService.session) return;
 
     const chatMessage : ChatMessage = {
@@ -63,11 +62,11 @@ export class WebsocketService {
     });
   }
 
-  connect(): void {
+  public connect(): void {
     this.stompClient.activate();
   }
 
-  disconnect(): void {
+  public disconnect(): void {
     if(this.stompClient.connected) {
       this.stompClient.deactivate();
     }

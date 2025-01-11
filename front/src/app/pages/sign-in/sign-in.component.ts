@@ -15,9 +15,9 @@ import { take } from 'rxjs';
 export class SignInComponent {
 
     private sessionService = inject(SessionService);
-    errorMessage : string | null = null;
-
-    formObject : any = {
+    
+    public errorMessage : string | null = null;
+    public formObject : any = {
         email: '',
         password: ''
     };
@@ -26,7 +26,7 @@ export class SignInComponent {
         private router : Router
     ) {}
 
-    onSignIn(): void {
+    public onSignIn(): void {
         this.sessionService.signIn(this.formObject.email, this.formObject.password)
             .pipe(
                 take(1)

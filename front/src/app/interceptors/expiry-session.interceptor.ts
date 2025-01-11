@@ -10,8 +10,7 @@ const handleAuthError = (err : HttpErrorResponse) => {
   if (err.status === 401 || err.status === 403 || err.status === 498) {
     sessionService.signOut();
     router.navigateByUrl(`/sign-in`);
-    // if you've caught / handled the error, you don't want to rethrow it unless you also want downstream consumers to have to handle it as well.
-    return of(err.message); // or EMPTY may be appropriate here
+    return of(err.message);
   }
   return throwError(() => err);
 }

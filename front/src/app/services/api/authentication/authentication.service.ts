@@ -14,7 +14,7 @@ export class AuthenticationService {
     private httpClient : HttpClient
   ) { }
 
-  login(email : string, password : string) : Observable<TokenDto> {
+  public login(email : string, password : string) : Observable<TokenDto> {
     return this.httpClient.post<TokenDto>(`${this.pathService}/login`, {email: email, password: password});
   }
 }

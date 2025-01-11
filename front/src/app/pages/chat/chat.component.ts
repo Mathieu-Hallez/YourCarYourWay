@@ -12,10 +12,10 @@ import { SessionService } from '../../services/session/session.service';
 export class ChatComponent {
   private sessionService = inject(SessionService);
 
-  receiverEmail! : string;
-  senderEmail : string = this.sessionService.session?.$email ?? '';
+  public receiverEmail! : string;
+  public senderEmail : string = this.sessionService.session?.$email ?? '';
 
-  selectConversation(email : string): void {
+  public selectConversation(email : string): void {
     this.receiverEmail = email;
   }
 }

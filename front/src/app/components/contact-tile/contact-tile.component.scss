@@ -26,10 +26,9 @@
     }
 }
 
-/* Responsiveness pour les petits écrans */
 @media (max-width: 768px) {
     .contact-button {
-        padding: 12px; /* Réduit le padding sur petits écrans */
-        font-size: 14px; /* Réduit la taille de la police */
+        padding: 12px;
+        font-size: 14px;
     }
 }

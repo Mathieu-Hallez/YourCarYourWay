@@ -1,5 +1,5 @@
 export interface ConversationUserDto {
-    lastname: string,
-    firstname: string,
-    email: string
+    lastname: string;
+    firstname: string;
+    email: string;
 }

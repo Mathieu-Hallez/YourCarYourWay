@@ -14,11 +14,11 @@ export class MessageTextInputComponent {
   @Input({ required: true })
   sendMessage! : (message : string) => void;
 
-  formObject : any = {
+  public formObject : any = {
     message : ''
   }
 
-  onSendMessage(form : NgForm) {
+  public onSendMessage(form : NgForm): void {
     this.sendMessage(this.formObject.message);
     form.reset({
       message: ''

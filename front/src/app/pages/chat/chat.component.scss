@@ -1,12 +1,10 @@
 .chat-container {
     flex:1;
-    display: flex; // Permet de placer la sidebar et la conversation côte à côte
-    flex-direction: row; // Organise horizontalement
-    // justify-content: stretch; // Étire les enfants sur l'axe horizontal
-    // align-items: stretch; // Aligne les enfants sur l'axe vertical
+    display: flex;
+    flex-direction: row;
 
     .side-bar {
-        width: 25%; // Largeur de la liste des contacts
+        width: 25%;
         background-color: #f4f4f4;
         border-right: 1px solid #ddd;
         display: flex;

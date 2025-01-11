@@ -10,7 +10,7 @@ import { TokenDto } from '../../interfaces/TokenDto';
 export class SessionService {
   private authenticationService : AuthenticationService = inject(AuthenticationService);
 
-  session : Session | null = null;
+  public session : Session | null = null;
 
   constructor() { }
 

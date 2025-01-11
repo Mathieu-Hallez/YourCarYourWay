@@ -12,9 +12,9 @@ export class ContactTileComponent {
   @Input()
   contact! : Contact;
 
-  onContactUpdate : OutputEmitterRef<string> = output<string>();
+  public onContactUpdate : OutputEmitterRef<string> = output<string>();
 
-  onClick(): void {
+  public onClick(): void {
     this.onContactUpdate.emit(this.contact.$email);
   }
 }

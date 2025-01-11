@@ -16,7 +16,7 @@ export class MessageComponent implements OnInit {
   @Input() message! : Message;
   isSent : boolean = false;
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.isSent = this.sessionService.session?.$email == this.message.$sender;
   }
   
