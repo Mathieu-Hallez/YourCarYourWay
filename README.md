@@ -14,3 +14,7 @@ In this monorepository you can find the Backend split in two distinct Spring pro
 2. Second, launch the ***Web API*** (./back/).
 3. Then, launch the ***Chat Server*** (./chat-server/).
 4. Finnally, start the ***Angular Web Application*** (./front).
+
+## Licensing
+
+This project was built under the MIT licence.

@@ -83,3 +83,7 @@ The project run in Java JDK 21. You can download [here](https://www.oracle.com/f
 - [Swagger](http://localhost:3001/swagger-ui.html) : http://localhost:3001/swagger-ui.html
 - [OpenAPI](http://localhost:3001/api-docs) : http://localhost:3001/api-docs
 ---
+
+## Licensing
+
+This project was built under the MIT licence.

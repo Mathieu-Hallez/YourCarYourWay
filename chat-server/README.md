@@ -43,3 +43,7 @@ The project run in Java JDK 21. You can download [here](https://www.oracle.com/f
 | services      | Processing of received data.              |
 | dtos          | Data Transfere Object (DTO).              |
 | configurations| All spring project configurations         |
+
+## Licensing
+
+This project was built under the MIT licence.
